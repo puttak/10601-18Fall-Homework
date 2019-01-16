@@ -1,0 +1,903 @@
+
+%-----------------------------------------------------------------------------
+% PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%-----------------------------------------------------------------------------
+
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsfonts}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{url}
+\usepackage{xfrac}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{paralist}
+\usepackage{epstopdf}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{fancyvrb}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{float}
+\usepackage{paralist}
+\usepackage[svgname]{xcolor}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{times}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{environ}
+\usepackage{times}
+\usepackage{textcomp}
+\usepackage{caption}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{parskip} % For NIPS style paragraphs.
+\usepackage[compact]{titlesec} % Less whitespace around titles
+\usepackage[inline]{enumitem} % For inline enumerate* and itemize*
+\usepackage{datetime}
+\usepackage{comment}
+% \usepackage{minted}
+\usepackage{lastpage}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage[final]{listings}
+\usepackage{tikz}
+\usetikzlibrary{shapes,decorations}
+\usepackage{framed}
+\usepackage{booktabs}
+\usepackage{cprotect}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{verbatimbox}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{mathtools} % For drcases
+\usepackage{cancel}
+\usepackage[many]{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Better numbering                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\blackcircle}{\tikz\draw[black,fill=black] (0,0) circle (1ex);}
+\renewcommand{\circle}{\tikz\draw[black] (0,0) circle (1ex);}
+\newcommand{\vc}[1]{\boldsymbol{#1}}
+\newcommand{\adj}[1]{\frac{d J}{d #1}}
+\newcommand{\chain}[2]{\adj{#2} = \adj{#1}\frac{d #1}{d #2}}
+\newcommand{\ntset}{test}
+
+% mathcal
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\Dc}{\mathcal{D}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Ic}{\mathcal{I}}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Qc}{\mathcal{Q}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Sc}{\mathcal{S}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Wc}{\mathcal{W}}
+\newcommand{\Xc}{\mathcal{X}}
+\newcommand{\Yc}{\mathcal{Y}}
+\newcommand{\Zc}{\mathcal{Z}}
+
+% mathbb
+\newcommand{\Ab}{\mathbb{A}}
+\newcommand{\Bb}{\mathbb{B}}
+\newcommand{\Cb}{\mathbb{C}}
+\newcommand{\Db}{\mathbb{D}}
+\newcommand{\Eb}{\mathbb{E}}
+\newcommand{\Fb}{\mathbb{F}}
+\newcommand{\Gb}{\mathbb{G}}
+\newcommand{\Hb}{\mathbb{H}}
+\newcommand{\Ib}{\mathbb{I}}
+\newcommand{\Jb}{\mathbb{J}}
+\newcommand{\Kb}{\mathbb{K}}
+\newcommand{\Lb}{\mathbb{L}}
+\newcommand{\Mb}{\mathbb{M}}
+\newcommand{\Nb}{\mathbb{N}}
+\newcommand{\Ob}{\mathbb{O}}
+\newcommand{\Pb}{\mathbb{P}}
+\newcommand{\Qb}{\mathbb{Q}}
+\newcommand{\Rb}{\mathbb{R}}
+\newcommand{\Sb}{\mathbb{S}}
+\newcommand{\Tb}{\mathbb{T}}
+\newcommand{\Ub}{\mathbb{U}}
+\newcommand{\Vb}{\mathbb{V}}
+\newcommand{\Wb}{\mathbb{W}}
+\newcommand{\Xb}{\mathbb{X}}
+\newcommand{\Yb}{\mathbb{Y}}
+\newcommand{\Zb}{\mathbb{Z}}
+
+% mathbf lowercase
+\newcommand{\av}{\mathbf{a}}
+\newcommand{\bv}{\mathbf{b}}
+\newcommand{\cv}{\mathbf{c}}
+\newcommand{\dv}{\mathbf{d}}
+\newcommand{\ev}{\mathbf{e}}
+\newcommand{\fv}{\mathbf{f}}
+\newcommand{\gv}{\mathbf{g}}
+\newcommand{\hv}{\mathbf{h}}
+\newcommand{\iv}{\mathbf{i}}
+\newcommand{\jv}{\mathbf{j}}
+\newcommand{\kv}{\mathbf{k}}
+\newcommand{\lv}{\mathbf{l}}
+\newcommand{\mv}{\mathbf{m}}
+\newcommand{\nv}{\mathbf{n}}
+\newcommand{\ov}{\mathbf{o}}
+\newcommand{\pv}{\mathbf{p}}
+\newcommand{\qv}{\mathbf{q}}
+\newcommand{\rv}{\mathbf{r}}
+\newcommand{\sv}{\mathbf{s}}
+\newcommand{\tv}{\mathbf{t}}
+\newcommand{\uv}{\mathbf{u}}
+\newcommand{\vv}{\mathbf{v}}
+\newcommand{\wv}{\mathbf{w}}
+\newcommand{\xv}{\mathbf{x}}
+\newcommand{\yv}{\mathbf{y}}
+\newcommand{\zv}{\mathbf{z}}
+
+% mathbf uppercase
+\newcommand{\Av}{\mathbf{A}}
+\newcommand{\Bv}{\mathbf{B}}
+\newcommand{\Cv}{\mathbf{C}}
+\newcommand{\Dv}{\mathbf{D}}
+\newcommand{\Ev}{\mathbf{E}}
+\newcommand{\Fv}{\mathbf{F}}
+\newcommand{\Gv}{\mathbf{G}}
+\newcommand{\Hv}{\mathbf{H}}
+\newcommand{\Iv}{\mathbf{I}}
+\newcommand{\Jv}{\mathbf{J}}
+\newcommand{\Kv}{\mathbf{K}}
+\newcommand{\Lv}{\mathbf{L}}
+\newcommand{\Mv}{\mathbf{M}}
+\newcommand{\Nv}{\mathbf{N}}
+\newcommand{\Ov}{\mathbf{O}}
+\newcommand{\Pv}{\mathbf{P}}
+\newcommand{\Qv}{\mathbf{Q}}
+\newcommand{\Rv}{\mathbf{R}}
+\newcommand{\Sv}{\mathbf{S}}
+\newcommand{\Tv}{\mathbf{T}}
+\newcommand{\Uv}{\mathbf{U}}
+\newcommand{\Vv}{\mathbf{V}}
+\newcommand{\Wv}{\mathbf{W}}
+\newcommand{\Xv}{\mathbf{X}}
+\newcommand{\Yv}{\mathbf{Y}}
+\newcommand{\Zv}{\mathbf{Z}}
+
+% bold greek lowercase
+\newcommand{\alphav     }{\boldsymbol \alpha     }
+\newcommand{\betav      }{\boldsymbol \beta      }
+\newcommand{\gammav     }{\boldsymbol \gamma     }
+\newcommand{\deltav     }{\boldsymbol \delta     }
+\newcommand{\epsilonv   }{\boldsymbol \epsilon   }
+\newcommand{\varepsilonv}{\boldsymbol \varepsilon}
+\newcommand{\zetav      }{\boldsymbol \zeta      }
+\newcommand{\etav       }{\boldsymbol \eta       }
+\newcommand{\thetav     }{\boldsymbol \theta     }
+\newcommand{\varthetav  }{\boldsymbol \vartheta  }
+\newcommand{\iotav      }{\boldsymbol \iota      }
+\newcommand{\kappav     }{\boldsymbol \kappa     }
+\newcommand{\varkappav  }{\boldsymbol \varkappa  }
+\newcommand{\lambdav    }{\boldsymbol \lambda    }
+\newcommand{\muv        }{\boldsymbol \mu        }
+\newcommand{\nuv        }{\boldsymbol \nu        }
+\newcommand{\xiv        }{\boldsymbol \xi        }
+\newcommand{\omicronv   }{\boldsymbol \omicron   }
+\newcommand{\piv        }{\boldsymbol \pi        }
+\newcommand{\varpiv     }{\boldsymbol \varpi     }
+\newcommand{\rhov       }{\boldsymbol \rho       }
+\newcommand{\varrhov    }{\boldsymbol \varrho    }
+\newcommand{\sigmav     }{\boldsymbol \sigma     }
+\newcommand{\varsigmav  }{\boldsymbol \varsigma  }
+\newcommand{\tauv       }{\boldsymbol \tau       }
+\newcommand{\upsilonv   }{\boldsymbol \upsilon   }
+\newcommand{\phiv       }{\boldsymbol \phi       }
+\newcommand{\varphiv    }{\boldsymbol \varphi    }
+\newcommand{\chiv       }{\boldsymbol \chi       }
+\newcommand{\psiv       }{\boldsymbol \psi       }
+\newcommand{\omegav     }{\boldsymbol \omega     }
+
+% bold greek uppercase
+\newcommand{\Gammav     }{\boldsymbol \Gamma     }
+\newcommand{\Deltav     }{\boldsymbol \Delta     }
+\newcommand{\Thetav     }{\boldsymbol \Theta     }
+\newcommand{\Lambdav    }{\boldsymbol \Lambda    }
+\newcommand{\Xiv        }{\boldsymbol \Xi        }
+\newcommand{\Piv        }{\boldsymbol \Pi        }
+\newcommand{\Sigmav     }{\boldsymbol \Sigma     }
+\newcommand{\Upsilonv   }{\boldsymbol \Upsilon   }
+\newcommand{\Phiv       }{\boldsymbol \Phi       }
+\newcommand{\Psiv       }{\boldsymbol \Psi       }
+\newcommand{\Omegav     }{\boldsymbol \Omega     }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code highlighting with listings         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\definecolor{light-gray}{gray}{0.95}
+
+\newcommand{\MYhref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinelanguage{Shell}{
+  keywords={tar, cd, make},
+  %keywordstyle=\color{bluekeywords}\bfseries,
+  alsoletter={+},
+  ndkeywords={python, py, javac, java, gcc, c, g++, cpp, .txt, octave, m, .tar},
+  %ndkeywordstyle=\color{bluekeywords}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  %stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  backgroundcolor = \color{light-gray}
+}
+
+\lstset{columns=fixed, basicstyle=\ttfamily,
+    backgroundcolor=\color{light-gray},xleftmargin=0.5cm,frame=tlbr,framesep=4pt,framerule=0pt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom box for highlights               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define box and box title style
+\tikzstyle{mybox} = [fill=blue!10, very thick,
+    rectangle, rounded corners, inner sep=1em, inner ysep=1em]
+
+% \newcommand{\notebox}[1]{
+% \begin{tikzpicture}
+% \node [mybox] (box){%
+%     \begin{minipage}{\textwidth}
+%     #1
+%     \end{minipage}
+% };
+% \end{tikzpicture}%
+% }
+
+\NewEnviron{notebox}{
+\begin{tikzpicture}
+\node [mybox] (box){
+    \begin{minipage}{\textwidth}
+        \BODY
+    \end{minipage}
+};
+\end{tikzpicture}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands showing / hiding solutions     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% To HIDE SOLUTIONS (to post at the website for students), set this value to 0: \def\issoln{0}
+\def\issoln{0}
+% Some commands to allow solutions to be embedded in the assignment file.
+\ifcsname issoln\endcsname \else \def\issoln{1} \fi
+% Default to an empty solutions environ.
+\NewEnviron{soln}{}{}
+\if\issoln 1
+% Otherwise, include solutions as below.
+\RenewEnviron{soln}{
+    \leavevmode\color{red}\ignorespaces
+    \textbf{Solution} \BODY
+}{}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands for customizing the assignment %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\courseName}{10-601 Introduction to Machine Learning (Fall 2018)}
+\newcommand{\hwName}{Homework 5: Neural Networks}
+\newcommand{\outDate}{Oct 9, 2018}
+\newcommand{\dueDate}{Oct 20, 2018 11:59 PM}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\hwName}}
+\rhead{\fancyplain{}{\courseName}}
+\cfoot{\thepage}
+
+\title{\textsc{\hwName}} % Title
+
+
+\author{\courseName\\
+  Carnegie Mellon University \\
+\url{https://piazza.com/cmu/fall2018/10601bd} \\
+OUT: \outDate{}\thanks{Compiled on \today{} at \currenttime{}} \\
+DUE: \dueDate{} \\ 
+TAs: Aakanksha, Edgar, Sida, Varsha}
+
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Useful commands for typesetting the questions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\points}[1]{{\bf [#1 points]}}
+\newcommand \expect {\mathbb{E}}
+\newcommand \mle [1]{{\hat #1}^{\rm MLE}}
+\newcommand \map [1]{{\hat #1}^{\rm MAP}}
+\newcommand \argmax {\operatorname*{argmax}}
+\newcommand \argmin {\operatorname*{argmin}}
+\newcommand \code [1]{{\tt #1}}
+\newcommand \datacount [1]{\#\{#1\}}
+\newcommand \ind [1]{\mathbb{I}\{#1\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document configuration %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't display a date in the title and remove the white space
+\predate{}
+\postdate{}
+\date{}
+
+% Don't display an author and remove the white space
+%\preauthor{}
+%\postauthor{}
+
+%%%%%%%%%%%%%%%%%%
+% Begin Document %
+%%%%%%%%%%%%%%%%%% 
+
+\begin{document}
+
+\maketitle
+
+\begin{notebox}
+\paragraph{Summary} In this assignment, you will build a handwriting recognition system using a neural network. As a warmup, Section \ref{sec:written} will lead you through an on-paper example of how to implement a neural network. Then, in Section 2, you will implement an end-to-end system that learns to perform handwritten letter classification.
+\end{notebox}
+
+
+\section*{START HERE: Instructions}
+\begin{itemize}
+
+\item \textbf{Collaboration Policy}: Collaboration on solving the homework is allowed, after you have thought about the problems on your own. It is also OK to get clarification (but not solutions) from books or online resources, again after you have thought about the problems on your own. There are two requirements: first, cite your collaborators fully and completely (e.g., ``Jane explained to me what is asked in Question 3.4''). Second, write your solution {\em independently}: close the book and all of your notes, and send collaborators out of the room, so that the solution comes from you only.  See the collaboration policy on the website for more information: \url{http://www.cs.cmu.edu/~mgormley/courses/10601bd-f18/about.html}
+\item\textbf{Late Submission Policy:} See the late submission policy
+  here:
+  \url{http://www.cs.cmu.edu/~mgormley/courses/10601bd-f18/about.html}
+
+\item\textbf{Submitting your work:} You will use Gradescope to submit
+  answers to all questions, and Autolab to submit your code. Please
+  follow instructions at the end of this PDF to correctly submit all your code to Autolab.
+
+  \begin{itemize}
+    
+  % COMMENT IF NOT USING CANVAS
+\begin{comment}
+  \item \textbf{Canvas:} Canvas (\url{https://canvas.cmu.edu}) will be
+    used for quiz-style problems (e.g. multiple choice, true / false,
+    numerical answers). Grading is done automatically.
+    %
+    You may only \textbf{submit once} on canvas, so be sure of your
+    answers before you submit. However, canvas allows you to work on
+    your answers and then close out of the page and it will save your
+    progress.  You will not be granted additional submissions, so
+    please be confident of your solutions when you are submitting your
+    assignment.
+    %
+    {\color{red} The above is true for future assignments, but this one
+    allows {\bf unlimited submissions}.}
+\end{comment}
+    
+  % COMMENT IF NOT USING GRADESCOPE
+   \item \textbf{Gradescope:} For written problems such as derivations,
+       proofs, or plots we will be using Gradescope
+       (\url{https://gradescope.com/}). Submissions can be handwritten, but
+       should be labeled and clearly legible. If your writing is not
+       legible, you will not be awarded marks. Alternatively, submissions
+       can be written in LaTeX. Upon submission, label each question
+       using the template provided. Regrade requests can be made, however
+       this gives the TA the opportunity to regrade your entire paper,
+       meaning if additional mistakes are found then points will be
+       deducted.
+       %   
+       Each derivation/proof should be  completed on a separate page.
+
+  %   COMMENT IF NOT USING AUTOLAB
+  \item \textbf{Autolab:} You will submit your code for programming
+    questions on the homework to Autolab
+    (\url{https://autolab.andrew.cmu.edu/}). After uploading your code,
+    our grading scripts will autograde your assignment by running your
+    program on a virtual machine (VM). 
+    %
+    The software installed on the VM is identical to that on
+    \texttt{linux.andrew.cmu.edu}, so you should check that your code
+    runs correctly there. If developing locally, check that the
+    version number of the programming language environment
+    (e.g. Python 2.7/3.5, Octave 3.8.2, OpenJDK 1.8.0, g++ 4.8.5) and
+    versions of permitted libraries (e.g. \texttt{numpy} 1.7.1) match
+    those on \texttt{linux.andrew.cmu.edu}.
+    % 
+    (Octave users: Please make sure you do not use any
+    Matlab-specific libraries in your code that might make it fail
+    against our tests.)
+    %
+    You have a {\bf total of 10 Autolab submissions}. Use them
+    wisely. In order to not waste Autolab submissions, we recommend
+    debugging your implementation on your local machine (or the linux
+    servers) and making sure your code is running correctly first
+    before any Autolab submission.
+    %
+
+  \end{itemize}
+  
+\item\textbf{Materials:} Download from Autolab the tar file (``Download
+  handout"). The tar file will contain all the data that you will need in order to complete this assignment.
+
+\end{itemize}
+
+For multiple choice or select all that apply questions, shade in the box or circle in the template document corresponding to the correct answer(s) for each of the questions. For \LaTeX users, use $\blacksquare$ and $\blackcircle$  for shaded boxes and circles, and don't change anything else.
+
+
+\clearpage
+
+\section*{Instructions for Specific Problem Types}
+
+For ``Select One" questions, please fill in the appropriate bubble completely:
+
+\begin{quote}
+\textbf{Select One:} Who taught this course?
+\begin{list}{}
+     \item $\blackcircle$ Matt Gormley
+     \item $\circle$ Marie Curie
+     \item $\circle$ Noam Chomsky
+\end{list}
+\end{quote}
+
+If you need to change your answer, you may cross out the previous answer and bubble in the new answer:
+
+\begin{quote}
+\textbf{Select One:} Who taught this course?
+\begin{list}{}
+     \item $\blackcircle$ Matt Gormley
+     \item $\circle$ Marie Curie\\
+     \xcancel{$\blackcircle$}{} Noam Chomsky
+\end{list}
+\end{quote}
+
+
+For ``Select all that apply" questions, please fill in all appropriate squares completely:
+
+\begin{quote}
+\textbf{Select all that apply:} Which are scientists?
+    \begin{list}{}
+    \item $\blacksquare$ Stephen Hawking 
+    \item $\blacksquare$ Albert Einstein
+    \item $\blacksquare$ Isaac Newton
+    \item $\square$ I don't know
+\end{list}
+\end{quote}
+
+Again, if you need to change your answer, you may cross out the previous answer(s) and bubble in the new answer(s):
+
+\begin{quote}
+\textbf{Select all that apply:} Which are scientists?
+    \begin{list}{}
+    \item $\blacksquare$ Stephen Hawking 
+    \item $\blacksquare$ Albert Einstein
+    \item $\blacksquare$ Isaac Newton\\
+    \xcancel{$\blacksquare$} I don't know
+\end{list}
+\end{quote}
+
+For questions where you must fill in a blank, please make sure your final answer is fully included in the given space. You may cross out answers or parts of answers, but the final answer must still be within the given space.
+
+\begin{quote}
+\textbf{Fill in the blank:} What is the course number?
+
+\begin{tcolorbox}[fit,height=1cm, width=4cm, blank, borderline={1pt}{-2pt},nobeforeafter]
+    \begin{center}\huge10-601\end{center}
+    \end{tcolorbox}\hspace{2cm}
+    \begin{tcolorbox}[fit,height=1cm, width=4cm, blank, borderline={1pt}{-2pt},nobeforeafter]
+    \begin{center}\huge10-\xcancel{7}601\end{center}
+    \end{tcolorbox}
+\end{quote}
+
+
+\clearpage
+
+\section{Written Questions \points{25}}
+\label{sec:written}
+
+Answer the following questions in the HW5 solutions template provided.  Then upload your solutions to Gradescope. You may use \LaTeX\ or print the template and hand-write your answers then scan it in. Failure to use the template may result in a penalty.
+
+\textbf{Note:} For all questions which require numerical answers, round up your final answers to four decimal places. For integers, you may drop trailing zeros.
+
+\subsection{Example Feed Forward and Backpropagation \points{15}}
+\label{sec:onelayertoy}
+
+ \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.8]{oneHL6.png}
+        \caption{A One Hidden Layer Neural Network}
+        \label{fig:oneHL}
+    \end{figure}
+
+\paragraph{Network Overview}
+Consider the neural network with one hidden layer shown in Figure \ref{fig:oneHL}. The input layer consists of 6 features $\xv = [x_1,...,x_6]^T$, the hidden layer has 4  nodes $\zv = [z_1,...,z_4]^T$, and the output layer is a probability distribution $\yv = [y_1, y_2, y_3]^T$ over 3 classes. We also add a bias to the input, $x_0 = 1$ and the hidden layer $z_0 = 1$, both of which are fixed to $1$.
+
+$\boldsymbol{\alpha}$ is the matrix of weights from the inputs to the hidden layer and $\boldsymbol{\beta}$ is the matrix of weights from the hidden layer to the output layer. 
+$\alpha_{j,i}$ represents the weight going \textit{to} the node $z_j$ in the hidden layer \textit{from} the node $x_i$ in the input layer (e.g. $\alpha_{1,2}$ is the weight from $x_2$ to $z_1$), and $\boldsymbol{\beta}$ is defined similarly. We will use a sigmoid activation function for the hidden layer and a softmax for the output layer. 
+
+\paragraph{Network Details}
+
+Equivalently, we define each of the following. 
+
+The input:
+
+\begin{align}
+\xv=[x_1,x_2,x_3,x_4,x_5,x_6]^T
+\end{align}
+
+Linear combination at first (hidden) layer:
+\begin{equation}
+a_j= \alpha_0 + \sum_{i=1}^6 \alpha_{j,i}*x_i,\,\, \forall j \in \{1,\ldots,4\}
+\end{equation}
+
+Activation at first (hidden) layer:
+\begin{align}
+z_j &= \sigma(a_j) = \frac{1}{1+\exp(-a_j)},\,\, \forall j \in \{1,\ldots,4\}
+\end{align}
+
+Linear combination at second (output) layer:
+\begin{equation}
+b_k = \beta_0 + \sum_{j=1}^4 \beta_{k,j}*z_j,\,\, \forall k \in \{1,\ldots,3\}
+\end{equation}
+
+Activation at second (output) layer:
+\begin{equation}
+\hat{y}_k = \frac{\exp(b_k)}{\sum\limits_{l=1}^3 \exp(b_l)},\,\, \forall k \in \{1,\ldots,3\}
+\end{equation}
+
+Note that the linear combination equations can be written equivalently as the product of the transpose of the weight matrix with the input vector. We can even fold in the bias term $\alpha_0$ by thinking of $x_0 = 1$, and fold in $\beta_0$ by thinking of $z_0 = 1$.
+
+\paragraph{Loss}
+
+We will use cross entropy loss, $\ell(\hat{\yv},\yv)$. If $\yv$ represents our target output, which will be a one-hot vector representing the correct class, and $\hat{\yv}$ represents the output of the network, the loss is calculated by:
+\begin{equation}
+   \ell(\hat{\yv},\yv) = - \sum_{i=1}^3 y_i \log(\hat{y}_i)
+\end{equation}
+
+\paragraph{Prediction}
+When doing prediction, we will predict the $\argmax$ of the output layer. For example, if $\hat{y}_1=0.3, \hat{y}_2=0.2, \hat{y}_3=0.5$ we would predict class 3. If the true class from the training data was $2$ we would have a one-hot vector $\yv$ with values $y_1=0$, $y_2=1$, $y_3=0$.
+    
+\begin{enumerate} 
+\item \points{4}
+     We initialize the weights as:
+\begin{center}
+$$\boldsymbol{\alpha}=
+    \begin{bmatrix}
+    1 & 2 & -3 & 0 & 1 & -3 \\
+    3 & 1 & 2 & 1 & 0 & 2 \\
+    2 & 2 & 2 & 2 & 2 & 1 \\
+    1 & 0 & 2 & 1 & -2 & 2
+    \end{bmatrix}$$
+    
+$$\boldsymbol{\beta}=
+    \begin{bmatrix}
+    1 & 2 & -2 & 1 \\
+    1 & -1 & 1 & 2 \\
+    3 & 1 & -1 & 1
+    \end{bmatrix}
+$$
+\end{center}
+    
+And weights on the bias terms (${\alpha}_{j,0}$ and ${\beta}_{j,0})$ are initialized to 1.
+    
+    You are given a training example $\xv^{(1)}=[1,1,0,0,1,1]^T$ with label class 2, so $\yv^{(1)}=[0,1,0]^T$. Using the initial weights, run the feed forward of the network over this example (without rounding during the calculation) and then answer the following questions. 
+    %In your responses, round to four decimal places---if the answer is an integer you need not include trailing zeros. 
+    % NOT NEEDED: (Note: the superscript $(1)$ simply indicates that a value corresponds to using training example $x^{(1)}$)
+    
+    \begin{enumerate}
+        \item What is $a_1$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            2
+        \end{tcolorbox}
+        
+        
+        \item What is $z_1$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            0.8808 
+        \end{tcolorbox}
+        
+        
+        \item What is $a_3$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            8 
+        \end{tcolorbox}
+        
+        
+        \item What is $z_3$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            0.9997 
+        \end{tcolorbox}
+        
+        
+        \item What is $b_2$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            3.6430
+        \end{tcolorbox}
+        
+        
+        \item What is $\hat{y}_2$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            0.2615
+        \end{tcolorbox}
+        
+        
+        \item Which class would we predict on this example?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            3 
+        \end{tcolorbox}
+        
+        
+        \item What is the total loss on this example?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            1.3412 
+        \end{tcolorbox}
+        
+    \end{enumerate}
+    
+    \clearpage
+\item \points{5} Now use the results of the previous question to run backpropagation over the network and update the weights. Use learning rate $\eta=1$. 
+    
+    
+    Do your backpropagation calculations without rounding then answer the following questions, then in your responses, round to four decimal places
+    
+     \begin{enumerate}
+        \item What is the updated value of ${\beta}_{2,1}$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            0.7367 
+        \end{tcolorbox}
+        
+        
+        \item What is the updated weight of the hidden layer bias term applied to $y_1$ (i.e. ${\beta}_{1,0}$)?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            -0.1143 
+        \end{tcolorbox}
+        
+        
+        \item What is the updated value of ${\alpha}_{3,4}$?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            2.0000 
+        \end{tcolorbox}
+        
+        
+        \item What is the updated weight of the input layer bias term applied to $z_2$ (i.e. ${\alpha}_{2,0}$)?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            0.9965 
+        \end{tcolorbox}
+        
+        
+        \item If we ran backpropagation on this example for a large number of iterations and then ran feed forward over the same example again, which class would we predict?
+        
+        \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            2 
+        \end{tcolorbox}
+        
+
+    \end{enumerate}
+
+\clearpage
+\item \points{6} Let us now introduce regularization into our neural network. For this question, we will incorporate L2 regularization into our loss function $\ell(\hat{\yv},\yv)$, with the parameter $\lambda$ controlling the weight given to the regularization term. 
+\begin{enumerate}
+    \item Write the expression for the regularized loss function of our network after adding L2 regularization (\textbf{Hint:} Remember that bias terms should not be regularized!) 
+    \begin{tcolorbox}[fit,height=3cm, width=10cm, blank, borderline={1pt}{-2pt}]
+            \begin{equation}\nonumber
+            \ell(\hat{\yv},\yv) = - \sum_{i=1}^3 y_i \log(\hat{y}_i) + \lambda(\sum_{j=1}^4\sum_{i=1}^6\alpha_{j,i}^2 + \sum_{j=1}^3\sum_{i=1}^4\beta_{j,i}^2)
+            \end{equation}
+        \end{tcolorbox}
+        
+        
+    \item Compute the regularized loss for training example $\xv^{(1)}$ (assume $\lambda$ = 0.01 and use the weights before backpropagation)
+     \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            2.4112
+        \end{tcolorbox}
+        
+        
+    Suppose the weight initialization for $\alpha$ is changed to the following:
+    $$\boldsymbol{\alpha}=
+    \begin{bmatrix}
+    10 & 20 & -30 & 0 & 10 & -30 \\
+    30 & 10 & 20 & 10 & 0 & 20 \\
+    20 & 20 & 20 & 20 & 20 & 10 \\
+    10 & 0 & 20 & 10 & -20 & 20
+    \end{bmatrix}$$
+    
+    $\beta$ and bias terms are not changed. \\
+    
+    \item Report the non-regularized loss for the network on training example $\xv^{(1)}$
+    \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            1.4076 
+        \end{tcolorbox}
+        
+    
+    \item Report the regularized loss for the network on training example $\xv^{(1)}$ ($\lambda$ = 0.01)
+    \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            79.6976
+        \end{tcolorbox}
+    
+    
+     \item For a network which uses the regularized loss function, write the gradient update equation for $\alpha_{j,i}$ . You may use $\frac{\partial \ell(\hat{\yv},\yv)}{\partial \alpha_{j,i}}$ to denote the gradient update w.r.t non-regularized loss and $\eta$ to denote the learning rate.
+    \begin{tcolorbox}[fit,height=3cm, width=10cm, blank, borderline={1pt}{-2pt}]
+            \begin{equation}\nonumber
+            \alpha_{j,i} := \alpha_{j,i} - \eta(\frac{\partial \ell(\hat{\yv},\yv)}{\partial \alpha_{j,i}} + 2\lambda \alpha_{j,i})
+            \end{equation}
+        \end{tcolorbox}
+    
+    
+    \clearpage
+    
+    \item Based on your observations from previous questions, \textbf{select all statements which are true}:
+    \begin{list}{}
+    \item $\square$ The non-regularized loss is always higher than the regularized loss 
+    \item $\blacksquare$ As weights become larger, the regularized loss increases faster than non-regularized loss
+    \item $\blacksquare$ On adding regularization to the loss function, gradient updates for the network become larger
+    \item $\blacksquare$ When using large initial weights, weight values decrease more rapidly for a network which uses regularized loss 
+    \item $\square$ None of the above
+\end{list}
+    
+    
+\end{enumerate}
+ 
+
+\end{enumerate}
+
+
+
+
+\clearpage
+\subsection{Empirical Questions \points{10}}
+\label{sec:interp}
+
+The following questions should be completed after you work through the programming portion of this assignment (Section 2).
+
+For these questions, \textbf{use the large dataset}.
+
+Use the following values for the hyperparameters unless otherwise specified:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Paramater} & \textbf{Value} \\
+        \hline
+        Number of Hidden Units & 50 \\
+        \hline
+        Weight Initialization & {\sc Random} \\
+        \hline
+        Learning Rate & 0.01 \\
+        \hline
+        
+    \end{tabular}
+    \caption{Default values of hyperparameters for experiments in Section \ref{sec:interp}.}
+    \label{tab:params}
+\end{table}
+
+ For the following questions, submit your solutions to Gradescope. Please submit computer-generated plots for Q4 and Q6. Do {\bf not} include any visualization-related code when submitting to Autolab! Note: we expect it to take about {\bf 5 minutes} to train each of these networks.
+ 
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item \points{4}  
+Train a single hidden layer neural network using the hyperparameters mentioned in Table \ref{tab:params}, except for the number of hidden units which should vary among 5, 20, 50, 100, and 200.  Run the optimization for 100 epochs each time.
+
+Plot the average training cross-entropy (sum of the cross-entropy terms over the training dataset divided by the total number of training examples) on the y-axis vs number of hidden units on the x-axis. In the \textbf{same figure}, plot the average \ntset \thinspace cross-entropy.
+
+ \begin{tcolorbox}[fit,height=10cm, width=15cm, blank, borderline={1pt}{-2pt}]
+    %solution 
+ \end{tcolorbox}
+
+
+
+\clearpage
+\item \points{1}
+Examine and comment on the the plots of training and \ntset\thinspace cross-entropy. What is the effect of changing the number of hidden units?
+
+ \begin{tcolorbox}[fit,height=8cm, width=15cm, blank, borderline={1pt}{-2pt}]
+    With the increase of the number of the hidden units in the network, the training cross-entropy keep decreasing. This means a network with more hidden units has a faster learning speeding that it can fit the training data better within same epochs of training. But as the figure have shown, the test cross-entropy for the network with 200 hidden units is greater than that for the network with 100 hidden units, which means more hidden units could also lead to over-fitting problem on the training data.
+    \end{tcolorbox}
+
+
+
+\clearpage
+\item \points{4} 
+Train a single hidden layer neural network using the hyperparameters mentioned in Table \ref{tab:params}, except for the learning rate which should vary among 0.1, 0.01, and 0.001. Run the optimization for 100 epochs each time.
+
+Plot the average training cross-entropy on the y-axis vs the number of epochs on the x-axis for the mentioned learning rates. In the \textbf{same figure}, plot the average \ntset\thinspace cross-entropy loss. You may make a separate figure for each learning rate.
+
+ \begin{tcolorbox}[fit,height=18cm, width=15cm, blank, borderline={1pt}{-2pt}]
+    %solution 
+    \end{tcolorbox}
+
+
+
+
+\clearpage
+\item \points{1} 
+Examine and comment on the the plots of training and \ntset\thinspace cross-entropy. How does adjusting the learning rate affect the convergence of cross-entropy of each dataset?
+
+ \begin{tcolorbox}[fit,height=10cm, width=15cm, blank, borderline={1pt}{-2pt}]
+    With the increase of the learning rate, the network fit better on the training data. With same number of training epochs, the network with a larger learning rate will have a lower training cross-entropy. But if the learning rate is too large, like equals to 0.01 or 0.1, the test cross-entropy will begin to increase at some point of the training process. This means a too large learning rate will lead to over-fitting problem on the training data.
+    \end{tcolorbox}
+
+
+\item \points{0} After you have completed all other components of this assignment, report your answers to the collaboration policy questions detailed in the Academic Integrity Policies found \href{http://www.cs.cmu.edu/~mgormley/courses/10601bd-f18/about.html#7-academic-integrity-policies}{here}.
+    \begin{enumerate*}
+        \item Did you receive any help whatsoever from anyone in solving this assignment? Is so, include full details.
+        \item Did you give any help whatsoever to anyone in solving this assignment? Is so, include full details.
+        \item Did you find or come across code that implements any part of this assignment ? If so, include full details.
+    \end{enumerate*}
+
+\begin{tcolorbox}[fit,height=8cm, width=15cm, blank, borderline={1pt}{-2pt}]
+    (a) No. (b) No. (c) No. 
+    \end{tcolorbox}
+
+\end{enumerate}
+
+
+\clearpage
+
+%\input{problem2}
+%\clearpage
+%\appendix
+%\input{appendix}
+
+\end{document}
+
+

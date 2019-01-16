@@ -1,0 +1,13 @@
+python feature.py largedata/train_data.tsv largedata/valid_data.tsv largedata/test_data.tsv dict.txt my_result/model2_formatted_train.tsv my_result/model2_formatted_valid.tsv my_result/model2_formatted_test.tsv 2
+
+python feature.py smalldata/smalltrain_data.tsv smalldata/smallvalid_data.tsv smalldata/smalltest_data.tsv dict.txt my_result/model1_formatted_train.tsv my_result/model1_formatted_valid.tsv my_result/model1_formatted_test.tsv 1
+
+python lr.py my_result/model1_formatted_train.tsv my_result/model1_formatted_valid.tsv my_result/model1_formatted_test.tsv dict.txt my_result/train_out.labels my_result/test_out.labels my_result/metric_out.txt 200
+
+python lr.py my_result/model2_formatted_train.tsv my_result/model2_formatted_valid.tsv my_result/model2_formatted_test.tsv dict.txt my_result/train_out.labels my_result/test_out.labels my_result/metric_out.txt 200
+
+python feature.py largedata/train_data.tsv largedata/valid_data.tsv largedata/test_data.tsv dict.txt my_result/model1_formatted_train.tsv my_result/model1_formatted_valid.tsv my_result/model1_formatted_test.tsv 1
+
+python feature.py largedata/train_data.tsv largedata/valid_data.tsv largedata/test_data.tsv dict.txt my_result/model1_formatted_train.tsv my_result/model1_formatted_valid.tsv my_result/model1_formatted_test.tsv 1
+
+python feature.py largedata/train_data.tsv largedata/valid_data.tsv largedata/test_data.tsv dict.txt my_result/model2_formatted_train.tsv my_result/model2_formatted_valid.tsv my_result/model2_formatted_test.tsv 2

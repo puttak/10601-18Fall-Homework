@@ -1,0 +1,3 @@
+you_B eat_A fish_B
+you_B fish_B eat_A
+eat_A fish_B

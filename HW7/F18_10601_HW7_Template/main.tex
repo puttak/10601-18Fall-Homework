@@ -1,0 +1,502 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm, enumerate, framed, graphicx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{bm}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{float}
+\setlength{\marginparwidth}{2.15cm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{enumerate}
+\usepackage{epsfig}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[font=scriptsize]{subcaption}
+\usepackage{float}
+%\usepackage[]{algorithm2e}
+\usepackage{environ}
+\usepackage{bbm}
+\usepackage[normalem]{ulem}
+\usepackage{color}
+\usepackage{minted}
+\usepackage{tabu}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage[final]{listings}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{datetime}
+\usepackage{cancel}
+\usepackage[many]{tcolorbox}
+%\usepackage{xcolor}
+\newcommand{\blackcircle}{\tikz\draw[black,fill=black] (0,0) circle (1ex);}
+\renewcommand{\circle}{\tikz\draw[black] (0,0) circle (1ex);}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code highlighting with listings         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\definecolor{light-gray}{gray}{0.95}
+
+\newcommand{\MYhref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinelanguage{Shell}{
+  keywords={tar, cd, make},
+  %keywordstyle=\color{bluekeywords}\bfseries,
+  alsoletter={+},
+  ndkeywords={python, py, javac, java, gcc, c, g++, cpp, .txt, octave, m, .tar},
+  %ndkeywordstyle=\color{bluekeywords}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  %stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  backgroundcolor = \color{light-gray}
+}
+
+\lstset{columns=fixed, basicstyle=\ttfamily,
+    backgroundcolor=\color{light-gray},xleftmargin=0.5cm,frame=tlbr,framesep=4pt,framerule=0pt}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom box for highlights               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define box and box title style
+\tikzstyle{mybox} = [fill=blue!10, very thick,
+    rectangle, rounded corners, inner sep=1em, inner ysep=1em]
+
+% \newcommand{\notebox}[1]{
+% \begin{tikzpicture}
+% \node [mybox] (box){%
+%     \begin{minipage}{\textwidth}
+%     #1
+%     \end{minipage}
+% };
+% \end{tikzpicture}%
+% }
+
+\NewEnviron{notebox}{
+\begin{tikzpicture}
+\node [mybox] (box){
+    \begin{minipage}{\textwidth}
+        \BODY
+    \end{minipage}
+};
+\end{tikzpicture}
+}
+
+%%%% this is temporary to allow viewing of old solutions
+
+
+%% To HIDE SOLUTIONS (to post at the website for students), set this value to 0: \def\issoln{0}
+\def\issoln{0}
+% Some commands to allow solutions to be embedded in the assignment file.
+\ifcsname issoln\endcsname \else \def\issoln{1} \fi
+% Default to an empty solutions environ.
+\NewEnviron{soln}{}{}
+\if\issoln 1
+% Otherwise, include solutions as below.
+\RenewEnviron{soln}{
+    \leavevmode\color{red}\ignorespaces
+    \textbf{Solution} \BODY
+}{}
+\fi
+
+%\newcommand{\norm}[1]{\lVert #1 \rVert}
+%\newcommand{\st}{\mathrm{s.t.}}
+
+\makeatletter
+\newcommand{\removelatexerror}{\let\@latex@error\@gobble}
+\makeatother
+
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\newcommand{\Pb}{\mathbb{P}}
+\newcommand{\xv}{\mathbf{x}}
+
+
+\begin{document}
+
+\section*{}
+\begin{center}
+  \centerline{\textsc{\LARGE Homework 7}}
+  \vspace{0.5em}
+  \centerline{\textsc{\LARGE Hidden Markov Models}}
+  \vspace{1em}
+  \textsc{\large CMU 10-601: Machine Learning (Fall 2018)} \\
+  \url{https://piazza.com/cmu/fall2018/10601bd}
+  \centerline{OUT: Nov 9, 2018}
+  \centerline{DUE: Nov 19, 2018}
+    \centerline{TAs: Aakanksha, Edgar, Sida, Varsha}
+\end{center}
+
+
+\begin{notebox}
+\paragraph{Summary} In this assignment you will implement a new named entity recognition system using Hidden Markov Models. You will begin by going through some multiple choice warm-up problems to build your intuition for these models and then use that intuition to build your own HMM models.
+\end{notebox}
+
+\section*{START HERE: Instructions\footnote{Compiled on \today{} at \currenttime{}}}
+\begin{itemize}
+
+\item \textbf{Collaboration Policy}: Collaboration on solving the homework is allowed, after you have thought about the problems on your own. It is also OK to get clarification (but not solutions) from books or online resources, again after you have thought about the problems on your own. There are two requirements: first, cite your collaborators fully and completely (e.g., ``Jane explained to me what is asked in Question 3.4''). Second, write your solution {\em independently}: close the book and all of your notes, and send collaborators out of the room, so that the solution comes from you only.  See the collaboration policy on the website for more information: \url{http://www.cs.cmu.edu/~mgormley/courses/10601bd-f18/about.html}
+\item\textbf{Late Submission Policy:} See the late submission policy
+  here:
+  \url{http://www.cs.cmu.edu/~mgormley/courses/10601bd-f18/about.html}
+
+\item\textbf{Submitting your work:} You will use Gradescope to submit
+  answers to all questions, and Autolab to submit your code. Please
+  follow instructions at the end of this PDF to correctly submit all your code to Autolab.
+
+  \begin{itemize}
+    
+  % COMMENT IF NOT USING CANVAS
+\begin{comment}
+  \item \textbf{Canvas:} Canvas (\url{https://canvas.cmu.edu}) will be
+    used for quiz-style problems (e.g. multiple choice, true / false,
+    numerical answers). Grading is done automatically.
+    %
+    You may only \textbf{submit once} on canvas, so be sure of your
+    answers before you submit. However, canvas allows you to work on
+    your answers and then close out of the page and it will save your
+    progress.  You will not be granted additional submissions, so
+    please be confident of your solutions when you are submitting your
+    assignment.
+    %
+    {\color{red} The above is true for future assignments, but this one
+    allows {\bf unlimited submissions}.}
+\end{comment}
+    
+  % COMMENT IF NOT USING GRADESCOPE
+   \item \textbf{Gradescope:} For written problems such as derivations,
+       proofs, or plots we will be using Gradescope
+       (\url{https://gradescope.com/}). Submissions can be handwritten, but
+       should be labeled and clearly legible. If your writing is not
+       legible, you will not be awarded marks. Alternatively, submissions
+       can be written in LaTeX. Upon submission, label each question
+       using the template provided. Regrade requests can be made, however
+       this gives the TA the opportunity to regrade your entire paper,
+       meaning if additional mistakes are found then points will be
+       deducted.
+       %   
+       Each derivation/proof should be  completed on a separate page.
+
+  %   COMMENT IF NOT USING AUTOLAB
+  \item \textbf{Autolab:} You will submit your code for programming
+    questions on the homework to Autolab
+    (\url{https://autolab.andrew.cmu.edu/}). After uploading your code,
+    our grading scripts will autograde your assignment by running your
+    program on a virtual machine (VM). 
+    %
+    The software installed on the VM is identical to that on
+    \texttt{linux.andrew.cmu.edu}, so you should check that your code
+    runs correctly there. If developing locally, check that the
+    version number of the programming language environment
+    (e.g. Python 2.7, Octave 3.8.2, OpenJDK 1.8.0, g++ 4.8.5) and
+    versions of permitted libraries (e.g. \texttt{numpy} 1.7.1) match
+    those on \texttt{linux.andrew.cmu.edu}.
+    % 
+    Octave users: Please make sure you do not use any
+    Matlab-specific libraries in your code that might make it fail
+    against our tests.
+    %
+    Python3 users: Please include a blank file called python3.txt (case-sensitive) in your tar submission. 
+    %
+    You have a {\bf total of 10 Autolab submissions}. Use them
+    wisely. In order to not waste Autolab submissions, we recommend
+    debugging your implementation on your local machine (or the linux
+    servers) and making sure your code is running correctly first
+    before any Autolab submission. 
+    %
+
+  \end{itemize}
+  
+\item\textbf{Materials:} Download from autolab the tar file ("Download
+  handout"). The tar file will contain all the data that you will need in order to complete this assignment.
+
+\end{itemize}
+
+For multiple choice or select all that apply questions, shade in the box or circle in the template document corresponding to the correct answer(s) for each of the questions. For \LaTeX users, use $\blacksquare$ and $\blackcircle$  for shaded boxes and circles, and don't change anything else.
+
+\clearpage
+
+\section*{Instructions for Specific Problem Types}
+
+For ``Select One" questions, please fill in the appropriate bubble completely:
+
+\begin{quote}
+\textbf{Select One:} Who taught this course?
+\begin{list}{}
+     \item $\blackcircle$ Matt Gormley
+     \item $\circle$ Marie Curie
+     \item $\circle$ Noam Chomsky
+\end{list}
+\end{quote}
+
+If you need to change your answer, you may cross out the previous answer and bubble in the new answer:
+
+\begin{quote}
+\textbf{Select One:} Who taught this course?
+\begin{list}{}
+     \item $\blackcircle$ Matt Gormley
+     \item $\circle$ Marie Curie\\
+     \xcancel{$\blackcircle$}{} Noam Chomsky
+\end{list}
+\end{quote}
+
+
+For ``Select all that apply" questions, please fill in all appropriate squares completely:
+
+\begin{quote}
+\textbf{Select all that apply:} Which are scientists?
+    \begin{list}{}
+    \item $\blacksquare$ Stephen Hawking 
+    \item $\blacksquare$ Albert Einstein
+    \item $\blacksquare$ Isaac Newton
+    \item $\square$ I don't know
+\end{list}
+\end{quote}
+
+Again, if you need to change your answer, you may cross out the previous answer(s) and bubble in the new answer(s):
+
+\begin{quote}
+\textbf{Select all that apply:} Which are scientists?
+    \begin{list}{}
+    \item $\blacksquare$ Stephen Hawking 
+    \item $\blacksquare$ Albert Einstein
+    \item $\blacksquare$ Isaac Newton\\
+    \xcancel{$\blacksquare$} I don't know
+\end{list}
+\end{quote}
+
+For questions where you must fill in a blank, please make sure your final answer is fully included in the given space. You may cross out answers or parts of answers, but the final answer must still be within the given space.
+
+\begin{quote}
+\textbf{Fill in the blank:} What is the course number?
+
+\begin{tcolorbox}[fit,height=1cm, width=4cm, blank, borderline={1pt}{-2pt},nobeforeafter]
+    \begin{center}\huge10-601\end{center}
+    \end{tcolorbox}\hspace{2cm}
+    \begin{tcolorbox}[fit,height=1cm, width=4cm, blank, borderline={1pt}{-2pt},nobeforeafter]
+    \begin{center}\huge10-\xcancel{7}601\end{center}
+    \end{tcolorbox}
+\end{quote}
+
+
+\clearpage
+
+\section{Written Questions [20 pts]}
+\subsection{Multiple Choice [10 pts]}
+In this section we will test your understanding of several aspects of HMMs.
+%
+Shade in the box or circle in the template document corresponding to the correct answer(s) for each of the questions below. 
+
+
+\begin{enumerate}
+\item (2 points. \textbf{Select all that apply}) Which of the following are true under the (first-order) Markov assumption in an HMM: 
+\begin{list}{$\square$}{}
+\item The states are independent
+\item The observations are independent
+\item $y_t \perp y_{t-1} | y_{t-2}$
+\item $y_t \perp y_{t-2} | y_{t-1}$
+\item None of the above
+\end{list}
+
+
+
+\item (2 points. \textbf{Select all that apply}) Which of the following independence assumptions hold in an HMM:
+\begin{list}{$\square$}{}
+\setlength\itemsep{-1.5em}
+\item The current observation $x_t$ is conditionally independent of all other observations given the current state $y_t$\\
+\item The current observation $x_t$ is conditionally independent of all other states given the current state $y_t$\\
+\item The current state $y_t$ is conditionally independent of all states given the previous state $y_{t-1}$\\
+\item The current observation $x_t$ is conditionally independent of $x_{t-2}$ given the previous observation $x_{t-1}$.\\
+\item None of the above
+\end{list}
+
+\end{enumerate}
+
+In the remaining questions you will always see two quantities and decide what is the strongest relation between them. (? means it's not possible to assign any true relation). As such there is \textbf{only one correct answer}.\\
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item (2 points. Select one) What is the relation between $\sum_{i=0}^{N-1}(\alpha_5(i)*\beta_5(i))$ and $P(\xv)$? Select only the \textbf{strongest} relation that necessarily holds.
+\begin{list}{$\bigcirc$}{}
+\setlength\itemsep{-1.5em}
+\item $=$\\
+\item $>$\\
+\item $<$\\
+\item $\leq$\\
+\item $\geq$\\
+\item $?$\\
+\end{list}
+
+\item(2 points. Select one) What is the relation between $P(y_4=s_1, y_5=s_2, \xv)$ and $\alpha_4(s_1) \cdot \beta_5(s_2)$? Select only the \textbf{strongest} relation that necessarily holds.
+\begin{list}{$\bigcirc$}{}
+\setlength\itemsep{-1.5em}
+\item $=$\\
+\item $>$\\
+\item $<$\\
+\item $\leq$\\
+\item $\geq$\\
+\item $?$\\
+\end{list}
+
+\item (2 points. Select one) What is the relation between $\alpha_5(i)$ and $\beta_5(i)$? Select only the \textbf{strongest} relation that necessarily holds.
+\begin{list}{$\bigcirc$}{}
+\setlength\itemsep{-1.5em}
+\item $=$\\
+\item $>$\\
+\item $<$\\
+\item $\leq$\\
+\item $\geq$\\
+\item $?$\\
+\end{list}
+
+\end{enumerate}
+\subsection{Warm-up Exercise: Forward-Backward Algorithm [4 pts]}\label{toy}
+% working example [4 points]
+% write the example
+To help you prepare to implement the HMM forward-backward algorithm (see Section 2.3 for a detailed explanation), we have provided a small example for you to work through by hand. This toy data set consists of a training set of three sequences with three unique words and two tags and a test set with a single sequence composed of the same unique words used in the training set. Before going through this example, please carefully read the algorithm description in Sections 2.2 and 2.3.
+
+Training set:
+\begin{verbatim}
+you_B eat_A fish_B
+you_B fish_B eat_A
+eat_A fish_B
+\end{verbatim}
+
+Where the training word sequences are:
+$$
+x= 
+\begin{bmatrix}
+you & eat & fish\\
+you & fish & eat\\
+eat & fish &
+\end{bmatrix}
+$$
+
+And the corresponding tags are:
+$$
+y= 
+\begin{bmatrix}
+B & A & B\\
+B & B & A\\
+A & B &
+\end{bmatrix}
+$$
+
+
+Test set:
+\begin{verbatim}
+fish eat you
+\end{verbatim}
+
+or 
+
+$$
+x= 
+\begin{bmatrix}
+fish & eat & you\\
+\end{bmatrix}
+$$
+
+The following four questions are meant to encourage you to work through the forward backward algorithm by hand using this test example. Feel free to use a calculator, being careful to carry enough significant figures through your computations to avoid rounding errors. For each question below, please report the requested value in the text box next to the question (these boxes are only visible in the template document). When a number is requested, only write the number in the box. When a word/tag is requested, only write that word or tag. \textbf{DO NOT} include explanations or derivation work in the text box. Points will be deducted if anything else is included in the box.
+
+\clearpage
+
+\begin{enumerate}
+    \item (1 point) Compute $\alpha_2(A)$, the $\alpha$ value associated with the tag ``A'' for the second word in the test sequence. Please round your answer to \textbf{THREE} decimal places.
+    
+    \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            %solution 
+        \end{tcolorbox}
+    
+
+    \item (1 point) Compute $\beta_2(B)$, the $\beta$ value associated with the tag ``B'' for the second word in the test sequence. Please round your answer to \textbf{THREE} decimal places.
+    
+    \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            %solution 
+        \end{tcolorbox}
+    
+    \item (1 point) Predict the tag for the third word in the test sequence. 
+    
+    \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            %solution 
+        \end{tcolorbox}
+    
+    \item (1 point) Compute the log-likelihood for the entire test sequence, ``\texttt{fish eat you}". Please round your answer to \textbf{THREE} decimal places.
+    
+    \begin{tcolorbox}[fit,height=1cm, width=2cm, blank, borderline={1pt}{-2pt}]
+            %solution 
+        \end{tcolorbox}
+    
+\end{enumerate}
+
+
+\clearpage
+
+\subsection{Empirical Questions [6 pts]}
+[Return to these questions after implementing your \texttt{learnhmm.\{py|java|cpp|m\}} and \texttt{forwardbackward.\{py|java|cpp|m\}} functions]
+
+Using the fulldata set \textbf{trainwords.txt} in the handout using your implementation of \texttt{learnhmm.\{py|java|cpp|m\}} to learn parameters for an hmm model using the first 10, 100, 1000, and 10000 sequences in the file.
+Use these learned parameters perform prediction on the \textbf{trainwords.txt} and the \textbf{testwords.txt} files using your \texttt{forwardbackward.\{py|java|cpp|m\}}.
+Construct a plot with number of sequences used for training on the x-axis (log-scale) and average log likelihood across all sequences from the \textbf{trainwords.txt} or the \textbf{testwords.txt} on the y-axis (see Section 2.3 for details on computing the log data likelihood for a sequence). Each table entry is worth 0.5 points. 
+Write the resulting log likelihood values in the table in the template.
+Include your plot in the large box in the template (2 points).
+To receive credit for your plot, you must submit a computer generated plot.
+\textbf{DO NOT} hand draw your plot.
+
+\begin{table}[h]
+    \center
+    \begin{tabular}{|m{2cm}|m{3cm}|m{3cm}|}
+    \hline
+    \#sequences & Train average log-likelihood & Test average log-likelihood \\ \hline
+    10         &    &  \\ \hline
+    100        &    &  \\ \hline
+    1000       &    &  \\ \hline
+    10000      &    &  \\ \hline
+    \end{tabular}
+    \end{table}
+
+ \begin{tcolorbox}[fit,height=13cm, width=17cm, blank, borderline={1pt}{-2pt}]
+    %solution 
+ \end{tcolorbox}
+
+% plot [6 points]
+
+\subsection{Collaboration Policy}
+After you have completed all other components of this assignment, report your answers to the collaboration policy questions detailed in the Academic Integrity Policies found \href{http://www.cs.cmu.edu/~mgormley/courses/10601bd-f18/about.html#7-academic-integrity-policies}{here}.
+    \begin{enumerate}
+        \item Did you receive any help whatsoever from anyone in solving this assignment? Is so, include full details.
+        \item Did you give any help whatsoever to anyone in solving this assignment? Is so, include full details.
+        \item Did you find or come across code that implements any part of this assignment ? If so, include full details.
+    \end{enumerate}
+
+\begin{tcolorbox}[fit,height=10cm, width=17cm, blank, borderline={1pt}{-2pt}]
+    %solution 
+    \end{tcolorbox}
+
+\clearpage
+
+\end{document}

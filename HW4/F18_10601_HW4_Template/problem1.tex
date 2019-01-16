@@ -1,0 +1,207 @@
+\section{Written Questions [20 pts]}
+\label{sec:written}
+
+
+\subsection{Multinomial Logistic Regression [12 pts]}
+Multinomial logistic regression, also known as softmax regression and multiclass logistic regression, is a generalization of binary logistic regression. In this problem setting we have a dataset:
+\[
+\mathcal{D} = \left\{\left(\xv^{(1)}, y^{(1)}\right), \ldots, \left(\xv^{(N)}, y^{(N)}\right)\right\} \text{ where } \xv^{(i)} \in \Rb^M, y^{(i)} \in \{1, \ldots, K\} \text{ for } i = 1, \ldots, N
+\]
+Here $N$ is the number of training examples, $M$ is the number of features, and $K$ is the number of classes, which is usually greater than two to be interesting and not equivalent to binary logistic regression.
+
+\begin{enumerate}[label=(\alph*)]
+    \item {\bf [2 Points]} To motivate multinomial logistic regression, we will first look at a general way to extend a binary classifier to a multiclass classifier and apply it to logistic regression. One way to extend a binary classifier to a multiclass classifier is to use the One versus Rest (OvR) method. In this method, we will train $K$ binary classifiers, independently. Each classifier $h_i(\xv)$  will determine if a point $\xv$ is in class $i$ or not for $i = 1, \ldots, K$. 
+    
+    Suppose we have successfully trained $K$ \emph{binary logistic regression} classifiers in such a manner. Propose a method for determining the class of a new unlabeled point $\xv^{(*)}$ using the set of binary logistic regression classifiers $h_1(\xv), \ldots, h_K(\xv)$. Explain your reasoning. 
+
+    
+    \begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    The class of a new unlabeled point $\xv^{(*)}$ should be equal to the index of the classifer which has the highest regression value among all the trained $K$ \emph{binary logistic regression} classifiers. In other word, let the predicted class of the new unlabeled point $\xv^{(*)}$ be $k$, then:
+    $$
+    k = \mathop{argmax}_{i \in \{1, \dots, K\}}h_i(\xv^{(*)})
+    $$
+    This is because that $h_i(\xv^{(*)})$ indicates the probability of $\xv^{(*)}$ belonging to class $i$. Therefore, we should choose the class which has the highest probability that $\xv^{(*)}$ belongs to as the prediction class of our new unlabeled point $\xv^{(*)}$
+    \end{solution}
+    
+    
+    
+    
+    \clearpage
+    \item {\bf [1 Points]} Now we would like a method to do multiclass classification without having to train more than one classifier. Multinomial logistic regression is such a method. Remember that in multinomial logistic regression, we have
+    \[
+    p\left(y \mid \xv, \Thetav\right) = \frac{\exp\left(\thetav_{y} \xv \right)}{\sum_{j = 1}^K \exp\left(\thetav_{j} \xv\right)} = \text{softmax}((\Thetav \xv)_y)
+    \]
+    where $\Thetav$ is the parameter matrix of size $K \times (M + 1)$ and $\thetav_y$ denotes the $y$th \textbf{row} of $\Thetav$, which is the parameter vector for class $y$. Since we have folded the bias term into $\Thetav$ we now have $\xv \in \Rb^{M + 1}$. Let us represent class $C_k$ with a \emph{one-hot encoding}, specifically let $C_k \in \Rb^K$ where the $k$th entry in $C_k$ is 1, and 0 everywhere else. Let us also define a target matrix $\Tv$ of size $N \times K$, where the $i$th {\bf row} of $\Tv$ is $C_{y^{(i)}}$, where only the  $y^{(i)}$th entry is 1, and 0 else where.
+    
+    Write down the data conditional likelihood $ \mathcal{L}(\Thetav \mid \Tv, \Xv)$ in terms of $N$, $K$, $\Tv$ and $p\left(C_j \mid x^{(i)}, \Thetav \right)$. Please note that $\mathcal{L}(\Thetav \mid \Tv, \Xv) = p(\Tv \mid \Thetav, \Xv)$, where likelihood is a function of parameters (not probability), and it is equal in value to the label probability conditioned on data and parameters.
+    
+    \begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    \begin{equation}\nonumber
+    \begin{aligned}
+    \mathcal{L}(\Thetav \mid \Tv, \Xv)
+    &= p(\Tv \mid \Thetav, \Xv)\\
+    &= \prod_{i = 1}^Np\left(C_{y^{(i)}} \mid x^{(i)}, \Thetav \right)\\
+    &= \prod_{i = 1}^N\frac{\exp\left(\thetav_{y^{(i)}} x^{(i)} \right)}{\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right)}
+    \end{aligned}
+    \end{equation}
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \end{solution}
+    \clearpage
+    
+    
+    
+    
+    
+    \item {\bf [1 Points]} Write down the \emph{negative} conditional log-likelihood of the data in terms of $N$, $K$, $\Tv$ and $p\left(C_j \mid x^{(i)}, \Thetav \right)$. This will be your objective function $J(\Thetav)$, also known as cross-entropy loss.
+    
+    \begin{solution}
+    \begin{equation}\nonumber
+    \begin{aligned}
+    J(\Thetav) 
+    &= -log(\mathcal{L}(\Thetav \mid \Tv, \Xv)) \\
+    &= -log(p(\Tv \mid \Thetav, \Xv))\\
+    &= -log(\prod_{i = 1}^Np\left(C_{y^{(i)}} \mid x^{(i)}, \Thetav \right))\\
+    &= -\sum_{i = 1}^Nlog(p\left(C_{y^{(i)}} \mid x^{(i)}, \Thetav \right))\\
+    &= -\sum_{i = 1}^Nlog\frac{\exp\left(\thetav_{y^{(i)}} x^{(i)} \right)}{\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right)}\\
+    &= \sum_{i = 1}^N\left[log\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right) - \thetav_{y^{(i)}} x^{(i)}\right]
+    \end{aligned}
+    \end{equation}
+    % If you are using the latex template, remove the empty spaces
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \end{solution}
+    
+    \clearpage
+    
+    \item {\bf [4 Points]} Now let's derive the partial derivative of the objective function with respect to the $k$th parameter vector $\thetav_k$. That is, derive $\frac{ \partial J(\Thetav) }{ \partial \thetav_k}$, where $J(\Thetav)$ is the objective function that you provided above. Show that the partial derivative  is as follows:
+    
+    $$
+    \frac{\partial J(\Thetav)}{\partial \thetav_k} = - \sum_{i = 1}^N \left(\Tv_{i, k} - p\left(C_k \mid \xv^{(i)}, \Thetav\right)\right)  \xv^{(i)}
+    $$
+    
+    Show all steps of the derivation. (Please pay attention that $\Tv_i$ is $C_{y^{(i)}}$, and you should think about the reason why $y^{(i)}$ disappears in this equation, and what is the relation between $y^{(i)}$ and $\Tv_{i, k}$).
+    
+    
+    \begin{solution}
+    \begin{equation}\nonumber
+    \begin{aligned}
+    \frac{\partial J(\Thetav)}{\partial \thetav_{k, m}}
+    &= \frac{\partial}{\partial \thetav_{k, m}}\sum_{i = 1}^N\left[log\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right) - \thetav_{y^{(i)}} x^{(i)}\right]\\
+    &= \sum_{i = 1}^N\left[\frac{\partial}{\partial \thetav_{k, m}}log\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right) - \frac{\partial \thetav_{y^{(i)}} x^{(i)}}{\partial \thetav_{k, m}}\right]\\
+    &= \sum_{i = 1}^N \left[\frac{\frac{\partial}{\partial \thetav_{k, m}}\exp\left(\thetav_{k} x^{(i)}\right)}{\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right)}- \frac{\partial \thetav_{y^{(i)}} x^{(i)}}{\partial \thetav_{k, m}}\right]\\
+    &= \sum_{i = 1}^N \left[\frac{\exp\left(\thetav_{k} x^{(i)}\right)x^{(i)}_m}{\sum_{j = 1}^K \exp\left(\thetav_{j} x^{(i)}\right)} - [y^{(i)} == k]x^{(i)}_m\right]\\
+    &= \sum_{i = 1}^N \left[p\left(C_{k} \mid x^{(i)}, \Thetav \right) - [y^{(i)} == k]\right]x^{(i)}_m\\
+    &= - \sum_{i = 1}^N \left[\Tv_{i, k} - p\left(C_k \mid \xv^{(i)}, \Thetav\right)\right]x^{(i)}_m\\
+    \end{aligned}
+    \end{equation}
+    \begin{equation}\nonumber
+    \begin{aligned}
+    \frac{\partial J(\Thetav)}{\partial \thetav_k} 
+    &= \left[\frac{\partial J(\Thetav)}{\partial \thetav_{k, 1}}, \dots, \frac{\partial J(\Thetav)}{\partial \thetav_{k, M + 1}}\right]\\
+    &= - \sum_{i = 1}^N \left(\Tv_{i, k} - p\left(C_k \mid \xv^{(i)}, \Thetav\right)\right)\left[x^{(i)}_1, \dots, x^{(i)}_{M+1}\right]\\
+    &= - \sum_{i = 1}^N \left(\Tv_{i, k} - p\left(C_k \mid \xv^{(i)}, \Thetav\right)\right)  \xv^{(i)}
+    \end{aligned}
+    \end{equation}
+    % If you are using the latex template, remove the empty spaces
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \end{solution}
+    
+   
+    \clearpage
+    
+    \item {\bf [2 Points]} Write down the stochastic gradient descent update steps for an arbitrary $\theta_k$ using the $i^{th}$ training example in terms of $\mathbf{x^{(i)}}$, $\Tv_{i, k}$ and $p\left(C_k \mid \xv^{(i)}, \Thetav\right)$.
+    
+    \begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    $\theta_k \leftarrow \theta_k + \gamma  \xv^{(i)}\left(\Tv_{i, k} - p\left(C_k \mid \xv^{(i)}, \Thetav\right)\right)$
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    
+    \end{solution}
+    
+    
+    
+    \item {\bf [2 Points]} If you train mutinomial logistic regression for infinite iterations without $\ell_1 = |\Thetav|$ (sum of absolute values of all entries in the matrix ) or $\ell_2=||\Thetav||_2$ (square root of sum of squares of all entries in the matrix) regularization, the weights can go to infinity. What is an intuitive explanation for this phenomenon? How does regularization help correct the problem?
+    
+    \begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip    
+    \end{solution}
+    
+    
+    \clearpage
+    
+\end{enumerate}
+
+\subsection{Empirical Questions [8 pts]}
+\label{sec:empirical}
+
+The following questions should be completed as you work through the programming portion of this assignment (Section \ref{programming}).
+
+\begin{enumerate}
+    
+\item {\bf Plots [2 Points]} 
+For \emph{Model 1}, using the data in the largedata folder in the handout, make a plot that shows the average negative log likelihood for the training and validation data sets after each of 200 epochs. The y-axis should show the negative log likelihood and the x-axis should show the number of epochs.  
+
+\begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+\end{solution}
+
+\item {\bf Plots [2 Points]} 
+For \emph{Model 2}, make a plot as in the previous question.
+        
+\begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+\end{solution}
+\clearpage
+
+
+\item {\bf Explanation of Experiments [2 Points]}
+Write a few sentences explaining the output of the above experiments. In particular do the training and validation log likelihood curves look the same or different? Why?
+
+\begin{solution}
+    % If you are using the latex template, remove the empty spaces
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+    \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip
+\end{solution}
+
+\item {\bf Results [2 Points]} 
+Make a table with your train and test error for the large data set (found in the largedata folder in the handout) for each of the 2 models after running for 50 epochs.
+
+\begin{solution}
+     \begin{table}[H]
+        \centering
+        \begin{tabular}{l|l|l}
+        \toprule
+        & Train Error & Test Error \\ 
+        \midrule
+        Model 1      &         &         \\ 
+        Model 2 &         &         \\ 
+        \bottomrule
+        \end{tabular}
+        \caption{``Large Data'' Results}
+        \label{results}
+    \end{table}
+\end{solution}
+
+\end{enumerate}
+

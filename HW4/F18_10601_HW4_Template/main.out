@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Written Questions [20 pts]}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Multinomial Logistic Regression [12 pts]}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Empirical Questions [8 pts]}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Programming [80 pts]}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{The Tasks and Data Sets}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Model Definition}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{Implementation}{section.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Command Line Arguments}{subsection.2.3}% 8
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Output: Formatted Data Files}{subsection.2.3}% 9
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Output: Labels Files}{subsection.2.3}% 10
+\BOOKMARK [3][-]{subsubsection.2.3.4}{Output Metrics}{subsection.2.3}% 11
+\BOOKMARK [3][-]{subsubsection.2.3.5}{Feature Engineering}{subsection.2.3}% 12
+\BOOKMARK [3][-]{subsubsection.2.3.6}{Evaluation}{subsection.2.3}% 13
+\BOOKMARK [2][-]{subsection.2.4}{Autolab Submission}{section.2}% 14
+\BOOKMARK [1][-]{section.3}{Collaboration Questions}{}% 15
+\BOOKMARK [1][-]{appendix.A}{Implementation Details for Logistic Regression}{}% 16
+\BOOKMARK [2][-]{subsection.A.1}{Examples of Features}{appendix.A}% 17
+\BOOKMARK [2][-]{subsection.A.2}{Efficient Computation of the Dot-Product}{appendix.A}% 18
+\BOOKMARK [2][-]{subsection.A.3}{Data Structures for Fast Dot-Product}{appendix.A}% 19
